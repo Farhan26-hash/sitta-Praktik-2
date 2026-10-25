@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITTA UT - Tracking Delivery Order</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Vue.js 2.x CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <h1>🚚 SITTA UT - Tracking Delivery Order</h1>
+        </div>
+        <nav>
+            <a href="index.html">Beranda</a>
+            <a href="stok.html">Stok Bahan Ajar</a>
+            <a href="tracking.html" class="active">Tracking DO</a>
+        </nav>
+    </header>
+
+    <div id="app" class="container">
+
+        <!-- Fitur Pencarian Nomor DO -->
+        <div class="card">
+            <h3>🔍 Cari Delivery Order (DO)</h3>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" v-model="searchKey" class="form-control" placeholder="Masukkan Nomor DO (Contoh: DO2026-0001)">
+                <button @click="cariDO" class="btn btn-primary">Cari DO</button>
+            </div>
+
+            <!-- Hasil Pencarian -->
+            <div v-if="searchResult" style="margin-top: 15px; padding: 15px; background-color: #e7f5ff; border-radius: 8px; border: 1px solid #74c0fc;">
+                <h4 style="margin: 0 0 10px 0; color: #004b87;">Hasil Tracking: {{ searchResultKey }}</h4>
+                <p><strong>NIM / Nama:</strong> {{ searchResult.nim }} - {{ searchResult.nama }}</p>
+                <p><strong>Ekspedisi:</strong> {{ searchResult.ekspedisi }}</p>
+                <p><strong>Status:</strong> <span class="badge bg-sukses">{{ searchResult.status }}</span></p>
+                <p><strong>Paket & Total:</strong> {{ searchResult.paket }} (Rp {{ searchResult.total.toLocaleString() }})</p>
+                <strong>Riwayat Perjalanan:</strong>
+                <ul class="timeline">
+                    <li v-for="p in searchResult.perjalanan" class="timeline-item">
+                        <strong>{{ p.waktu }}</strong>: {{ p.keterangan }}
+                    </li>
+                </ul>
+            </div>
+            <p v-else-if="searchPerformed" style="color: red; margin-top: 10px;">⚠️ Nomor DO tidak ditemukan!</p>
+        </div>
+
+        <!-- Form Input DO Baru (Nomor DO BISA DIKETIK MANUAL) -->
+        <div class="card">
+            <h3>📝 Input Delivery Order (DO) Baru</h3>
+            <form @submit.prevent="tambahDO">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nomor DO (Bisa Diketik):</label>
+                        <!-- ATRIBUT 'disabled' DIHAPUS & DIGANTI v-model AGAR BISA DIKETIK -->
+                        <input type="text" v-model="formDO.noDO" class="form-control" placeholder="Contoh: DO2026-0002" required>
+                    </div>
+                    <div class="form-group">
+                        <label>NIM Mahasiswa:</label>
+                        <input type="text" v-model="formDO.nim" class="form-control" placeholder="Contoh: 041234567" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Mahasiswa:</label>
+                        <input type="text" v-model="formDO.nama" class="form-control" placeholder="Nama Lengkap" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ekspedisi:</label>
+                        <select v-model="formDO.ekspedisi" class="form-control" required>
+                            <option value="">-- Pilih Ekspedisi --</option>
+                            <option v-for="exp in pengirimanList" :value="exp.nama">{{ exp.nama }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Paket Bahan Ajar:</label>
+                        <select v-model="formDO.kodePaket" class="form-control" required>
+                            <option value="">-- Pilih Paket --</option>
+                            <option v-for="p in paket" :value="p.kode">{{ p.kode }} - {{ p.nama }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Kirim:</label>
+                        <input type="date" v-model="formDO.tanggalKirim" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- Informasi Detail Paket Terpilih -->
+                <div v-if="selectedPaketDetail" style="margin-top: 15px; padding: 12px; background: #e7f5ff; border: 1px solid #74c0fc; border-radius: 6px;">
+                    <strong>Detail Isi Paket:</strong> {{ selectedPaketDetail.isi.join(', ') }}<br>
+                    <strong>Total Harga:</strong> Rp {{ selectedPaketDetail.harga.toLocaleString() }}
+                </div>
+
+                <div style="margin-top: 18px;">
+                    <button type="submit" class="btn btn-primary">🚀 Simpan Delivery Order</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabel Daftar Status Pengiriman DO -->
+        <div class="card">
+            <h3>📋 Daftar Status Pengiriman Delivery Order</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No. DO</th>
+                            <th>NIM / Nama</th>
+                            <th>Ekspedisi</th>
+                            <th>Tanggal Kirim</th>
+                            <th>Paket & Total</th>
+                            <th>Status Perjalanan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(val, key) in tracking" :key="key">
+                            <td><strong style="color: var(--primary-color);">{{ key }}</strong></td>
+                            <td><strong>{{ val.nim }}</strong><br><small style="color: #666;">{{ val.nama }}</small></td>
+                            <td>{{ val.ekspedisi }}</td>
+                            <td>{{ val.tanggalKirim }}</td>
+                            <td>{{ val.paket }}<br><strong>Rp {{ val.total.toLocaleString() }}</strong></td>
+                            <td>
+                                <span class="badge bg-sukses">{{ val.status }}</span>
+                                <ul class="timeline">
+                                    <li v-for="p in val.perjalanan" class="timeline-item">
+                                        <small>{{ p.waktu }}: {{ p.keterangan }}</small>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script Logika Vue -->
+    <script src="js/tracking-app.js"></script>
+</body>
+</html>

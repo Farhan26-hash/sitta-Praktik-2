@@ -1,0 +1,424 @@
+/* ==========================================================================
+   1. VARIABEL & RESET DASAR (TEMA UNIVERSITAS TERBUKA)
+   ========================================================================== */
+:root {
+    --primary-color: #004b87;       /* Biru Khas UT */
+    --primary-hover: #003366;       /* Biru Gelap Hover */
+    --accent-color: #ffc107;        /* Kuning Emas UT */
+    --bg-color: #f4f6f9;            /* Background Abu-abu Muda */
+    --card-bg: #ffffff;             /* Background Kartu Putih */
+    --text-color: #2c3e50;           /* Warna Teks Utama */
+    --text-muted: #6c757d;          /* Warna Teks Sekunder */
+    --border-color: #cbd5e1;        /* Warna Border/Garis Pembatas Tabel & Kartu */
+    --success-color: #28a745;       /* Status Aman (Hijau) */
+    --warning-color: #fd7e14;       /* Status Menipis (Oranye) */
+    --danger-color: #dc3545;        /* Status Kosong (Merah) */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   2. HEADER & NAVIGASI UTAMA
+   ========================================================================== */
+header {
+    background: linear-gradient(135deg, var(--primary-color), #002752);
+    color: white;
+    padding: 0.8rem 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-ut {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+    background-color: white;
+    padding: 3px 6px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    margin-left: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+nav a.active, nav a:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+/* ==========================================================================
+   3. CONTAINER & LAYOUT KARTU (CARD)
+   ========================================================================== */
+.container {
+    padding: 2rem;
+    max-width: 1240px;
+    margin: auto;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 1.8rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1.8rem;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--bg-color);
+    padding-bottom: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ==========================================================================
+   4. TAMPILAN BERANDA (INDEX.HTML)
+   ========================================================================== */
+.hero-card {
+    background: linear-gradient(135deg, #ffffff, #e7f5ff);
+    border: 1px solid #74c0fc;
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.hero-logo {
+    height: 85px;
+    width: auto;
+    margin-bottom: 1rem;
+}
+
+.hero-card h2 {
+    color: var(--primary-color);
+    margin: 0 0 12px 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.hero-card p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    max-width: 780px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 22px;
+}
+
+.service-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2.2rem 1.8rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.service-icon {
+    font-size: 3.2rem;
+    margin-bottom: 0.8rem;
+}
+
+.service-card h3 {
+    color: var(--primary-color);
+    margin: 0 0 10px 0;
+    justify-content: center;
+}
+
+.service-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   5. FORMULIR & CONTROL INPUT
+   ========================================================================== */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.form-control {
+    padding: 10px 14px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 75, 135, 0.15);
+}
+
+.form-control:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    color: #6c757d;
+}
+
+/* ==========================================================================
+   6. TOMBOL ACTION (BUTTONS)
+   ========================================================================== */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    box-shadow: 0 4px 8px rgba(0, 75, 135, 0.25);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* ==========================================================================
+   7. BADGES STATUS STOK
+   ========================================================================== */
+.badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.bg-sukses { background-color: var(--success-color); }
+.bg-warning { background-color: var(--warning-color); }
+.bg-bahaya { background-color: var(--danger-color); }
+
+/* ==========================================================================
+   8. TABEL DATA STOK (DENGAN GARIS PEMBATAS JELAS)
+   ========================================================================== */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 0.8rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Menggabungkan garis pembatas sel */
+    background-color: white;
+    border: 1px solid var(--border-color); /* Garis luar tabel */
+}
+
+/* Garis Pembatas Header Tabel */
+th {
+    background-color: #f1f5f9;
+    color: var(--primary-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    padding: 12px 10px;
+    border: 1px solid var(--border-color); /* Garis vertikal & horizontal header */
+    text-align: left;
+}
+
+/* Garis Pembatas Baris & Kolom Data */
+td {
+    padding: 12px 10px;
+    border: 1px solid var(--border-color); /* Garis pembatas setiap kolom data */
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+}
+
+code {
+    background-color: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #d63384;
+}
+
+/* ==========================================================================
+   9. TIMELINE TRACKING DO
+   ========================================================================== */
+.timeline {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0 0 0;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 6px;
+    font-size: 0.83rem;
+    color: #495057;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+/* ==========================================================================
+   10. MEDIA QUERIES (RESPONSIF MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    nav a {
+        margin: 0 4px;
+        padding: 6px 12px;
+        font-size: 0.88rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    .hero-card {
+        padding: 2rem 1rem;
+    }
+
+    .hero-card h2 {
+        font-size: 1.4rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
